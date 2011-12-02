@@ -6,12 +6,17 @@ use FontCrawler\CrawlerBundle\FontFactory;
 use Symfony\Component\DomCrawler\Crawler as DomCrawler;
 use Symfony\Component\HttpFoundation\Request;
 use FontCrawler\CrawlerBundle\Crawler as CssCrawler;
+use Buzz\Browser;
 
 class FontFactoryTest extends \PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
-        $this->factory = new FontFactory(new DomCrawler(), new CssCrawler());
+        $this->factory = new FontFactory(
+            new DomCrawler(),
+            new CssCrawler(),
+            new Browser()
+        );
     }
 
     public function testInitFactory()

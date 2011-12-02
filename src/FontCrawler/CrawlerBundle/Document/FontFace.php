@@ -101,21 +101,21 @@ class FontFace
     /**
      * Sets the font sources.
      *
-     * @param array $src The font sources
+     * @param array $sources The font sources
      */
-    public function setSrc(array $src)
+    public function setSources(array $sources)
     {
-        $this->sources = $src;
+        $this->sources = $sources;
     }
 
     /**
-     * Adds a file to font sources.
+     * Adds a font source.
      *
-     * @param string $file The source file
+     * @param string $source The source
      */
-    public function addSources($file)
+    public function addSource($source)
     {
-        $this->sources[] = $file;
+        $this->sources[] = $source;
     }
 
     /**

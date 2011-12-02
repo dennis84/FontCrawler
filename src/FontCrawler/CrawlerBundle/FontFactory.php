@@ -8,15 +8,15 @@ use Buzz\Browser;
 
 use FontCrawler\CrawlerBundle\Crawler as CssCrawler;
 use FontCrawler\CrawlerBundle\Node\NodeInterface;
+use FontCrawler\CrawlerBundle\Document\FontFace;
 
 class FontFactory
 {
-    public function __construct(DomCrawler $domCrawler, CssCrawler $cssCrawler)
+    public function __construct(DomCrawler $domCrawler, CssCrawler $cssCrawler, Browser $browser)
     {
         $this->domCrawler = $domCrawler;
         $this->cssCrawler = $cssCrawler;
-        $this->browser  = new Browser();
-        
+        $this->browser    = $browser;
     }
 
     public function createFromHtml($input, $host, $fromFilsystem = false)
@@ -24,18 +24,8 @@ class FontFactory
         $this->domCrawler->clear();
         $this->domCrawler->addHtmlContent($input);
 
-        $links = new \ArrayObject;
-
-        $this->domCrawler->filter('link')->each(function ($node) use ($links) {
-            $link = $node->getAttribute('href');
-            $rel  = $node->getAttribute('rel');
-
-            if ('stylesheet' == $rel) {
-                $links[] = $link;
-            }
-        });
-
-        $factory = $this;
+        $links     = $this->findLinks($this->domCrawler);
+        $fontFaces = array();
 
         foreach ($links as $link) {
             $fileResource = $this->getLinkResource($link, $host, $fromFilsystem);
@@ -43,20 +33,13 @@ class FontFactory
                 continue;
             }
 
-            $this->cssCrawler
-                ->setInput($fileResource->getContent())
-                ->filter('@font-face', function(NodeInterface $node) use ($factory, $host, $fromFilsystem) {
-                    foreach ($node->getSrc() as $source) {
-                        $source = trim($source, "'");
-                        $source = $factory->getLinkResource($source, $host, $fromFilsystem);
-                        echo($source->getPath()) . PHP_EOL;
-                    }
-                });
-
-            //print_r($fileResource);
+            $fontFaces = array_merge(
+                $fontFaces,
+                $this->findFontFaces($fileResource)
+            );
         }
 
-        //return $links;
+        return $fontFaces;
     }
 
     public function getLinkResource($link, $host, $fromFilsystem = false)
@@ -73,7 +56,7 @@ class FontFactory
                 );
             }
 
-            return new FileResource($file, file_get_contents($file));
+            return new FileResource($file, file_get_contents($file), $host, $fromFilsystem);
         }
 
         $request = Request::create($host);
@@ -85,7 +68,55 @@ class FontFactory
         $status   = $response->getStatusCode();
 
         if (200 === $status) {
-            return new FileResource($link, $response->getContent());
+            return new FileResource($link, $response->getContent(), $host, $fromFilsystem);
         }
+    }
+
+    private function findLinks(DomCrawler $crawler)
+    {
+        $links = $this->domCrawler->filter('link')->each(function ($node) {
+            $link = $node->getAttribute('href');
+            $rel  = $node->getAttribute('rel');
+
+            if ('stylesheet' == $rel) {
+                return $link;
+            }
+        });
+
+        return array_filter($links);
+    }
+
+    private function findFontFaces(FileResource $fileResource)
+    {
+        $factory = $this;
+
+        $fontFaces = $this->cssCrawler
+            ->setInput($fileResource->getContent())
+            ->filter('@font-face', function(NodeInterface $node) use ($factory, $fileResource) {
+                $fontFace = new FontFace();
+                $fontFace->setFontFamily($node->getFontFamily());
+                $fontFace->setFontStyle($node->getFontStyle());
+                $fontFace->setFontWeight($node->getFontWeight());
+                
+
+                foreach ($node->getSrc() as $source) {
+                    $source = trim($source, "'");
+                    $source = $factory->getLinkResource(
+                        $source,
+                        $fileResource->getHost(),
+                        $fileResource->getFromFilesystem()
+                    );
+
+                    if (!$source) {
+                        continue;
+                    }
+
+                    $fontFace->addSource($source->getPath());
+                }
+
+                return $fontFace;
+            });
+
+        return $fontFaces;
     }
 }

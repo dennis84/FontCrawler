@@ -17,7 +17,8 @@ class HostRepository
     public function findHosts()
     {
         return array(
-            'http://www.gameop.de.localhost',
+            //'http://www.supreme.de',
+            'http://www.fontsquirrel.com',
         );
     }
 }

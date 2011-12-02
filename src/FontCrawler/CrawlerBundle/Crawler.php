@@ -82,6 +82,8 @@ class Crawler
      * @param mixed   $filter  The filter object
      * @param Closure $closure The callback function as closure
      *
+     * @return array
+     *
      * @throws InvalidArgumentException If the passed filter does not exists
      */
     public function filter($filter, \Closure $closure)
@@ -94,16 +96,23 @@ class Crawler
             throw new \InvalidArgumentException('The filter does not exists.');
         }
 
-        $nodes = $filter->filter($this->input);
+        $return = array();
+        $nodes  = $filter->filter($this->input);
+
+        if (!is_array($nodes)) {
+            return array();
+        }
 
         foreach ($nodes as $node) {
             $crawler = $this::create();
             $crawler->setInput($node->getValue());
 
-            $closure($node, $crawler);
+            $return[] = $closure($node, $crawler);
         }
 
         $this->nodeCount = count($nodes);
+
+        return array_filter($return);
     }
 
     /**
