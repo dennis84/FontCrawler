@@ -33,7 +33,7 @@ class HomeController extends Controller
     {
         $this->get('font_crawler.crawler.repository.host');
 
-        $host     = 'http://www.gameop.de.localhost';
+        $host     = 'http://www.supreme.de';
         $browser  = new Browser();
         $response = $browser->get($host);
 

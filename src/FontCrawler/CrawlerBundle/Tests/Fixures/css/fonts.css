@@ -1,11 +1,11 @@
 @font-face                  
 {
     font-family: 'KlavikaBold';
-    src: url('/klavika-bold.eot');
-    src: url('/klavika-bold.eot?#iefix') format('eot'),
-         url('/klavika-bold.woff') format('woff'),
-         url('/klavika-bold.ttf') format('truetype'),
-         url('/klavika-bold.svg#webfont4oSs889W') format('svg');
+    src: url('/font/klavika-bold.eot');
+    src: url('/font/klavika-bold.eot?#iefix') format('eot'),
+         url('/font/klavika-bold.woff') format('woff'),
+         url('/font/klavika-bold.ttf') format('truetype'),
+         url('/font/klavika-bold.svg#webfont4oSs889W') format('svg');
     font-weight: normal;
     font-style: normal;
 }
@@ -13,11 +13,11 @@
 
 @font-face                  {
     font-family:    'KlavikaLight';
-    src:            url('/bundles/core/font/klavika-light.eot');
-    src:            url('/bundles/core/font/klavika-light.eot?#iefix') format('eot'),
-        			url('/bundles/core/font/klavika-light.woff') format('woff'),
-					url('/bundles/core/font/klavika-light.ttf') format('truetype'),
-			        url('/bundles/core/font/klavika-light.svg#webfont2z6KVSBL') format('svg');
+    src:            url('/font/klavika-light.eot');
+    src:            url('/font/klavika-light.eot?#iefix') format('eot'),
+        			url('/font/klavika-light.woff') format('woff'),
+					url('/font/klavika-light.ttf') format('truetype'),
+			        url('/font/klavika-light.svg#webfont2z6KVSBL') format('svg');
     font-style:     myStyleForTests;            font-weight:myWightForTests
 }
 

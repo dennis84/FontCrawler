@@ -20,6 +20,7 @@
             class="Buzz\Browser"
         />
 
+        <!--
         <service
             id="font_crawler.crawler.file_factory"
             class="FontCrawler\CrawlerBundle\FileFactory">
@@ -27,6 +28,7 @@
             <argument type="service" id="font_crawler.crawler" />
             <argument type="service" id="buzz.browser" />
         </service>
+        -->
 
         <service
             id="font_crawler.crawler.filter.rule"

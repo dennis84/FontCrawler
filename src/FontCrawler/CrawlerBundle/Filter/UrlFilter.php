@@ -21,7 +21,7 @@ class UrlFilter implements FilterInterface
     public function filter($input)
     {
         preg_match_all(
-            '#url\((?P<url>.*?)\)#u',
+            '#url\((?P<url>.*?)[\#\?\)]#u',
             $input,
             $matches,
             PREG_SET_ORDER
