@@ -1,0 +1,15 @@
+
+@import url("fonts.css");
+@import url("tools/fonts.css") print;
+
+#hello  {
+    background: url("img.png") no-repeat;
+    color: #ff0000; text-align:center;}
+
+.foo{color:#000}
+
+.foo {
+
+font-size:12px
+
+}

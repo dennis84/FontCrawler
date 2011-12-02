@@ -1,0 +1,38 @@
+imports:
+    - { resource: security.yml }
+
+framework:
+    #esi:             ~
+    #translator:      { fallback: %locale% }
+    secret:          "1234567890"
+    charset:         UTF-8
+    router:          { resource: "%kernel.root_dir%/config/routing.yml" }
+    form:            true
+    csrf_protection: true
+    validation:      { enable_annotations: true }
+    templating:      { engines: ['twig'] } #assets_version: SomeVersionScheme
+    default_locale:  en
+    session:
+        auto_start:  true
+
+twig:
+    debug:            %kernel.debug%
+    strict_variables: %kernel.debug%
+
+assetic:
+    debug:          %kernel.debug%
+    use_controller: false
+    filters:
+        cssrewrite: ~
+        # closure:
+        #     jar: %kernel.root_dir%/java/compiler.jar
+        # yui_css:
+        #     jar: %kernel.root_dir%/java/yuicompressor-2.4.2.jar
+
+sensio_framework_extra:
+    router:  { annotations: true }
+    #request: { converters: true }
+    #view:    { annotations: true }
+    #cache:   { annotations: true }
+
+font_crawler_crawler:

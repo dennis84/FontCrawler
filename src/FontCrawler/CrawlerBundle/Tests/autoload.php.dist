@@ -1,0 +1,17 @@
+<?php
+
+$srcDir    = __DIR__.'/../../..';
+$vendorDir = __DIR__.'/../../../../vendor';
+
+require_once $vendorDir.'/symfony/src/Symfony/Component/ClassLoader/UniversalClassLoader.php';
+
+use Symfony\Component\ClassLoader\UniversalClassLoader;
+
+$loader = new UniversalClassLoader();
+$loader->registerNamespaces(array(
+    'Symfony'                => array($vendorDir.'/symfony/src', $vendorDir.'/bundles'),
+    'FontCrawler'            => $srcDir,
+    'Doctrine\\Common'       => $vendorDir.'/doctrine-common/lib',
+));
+
+$loader->register();

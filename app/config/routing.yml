@@ -1,0 +1,3 @@
+frontend:
+    resource: "@FontCrawlerFrontendBundle/Controller/HomeController.php"
+    type:     annotation

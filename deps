@@ -1,0 +1,94 @@
+[symfony]
+    git=http://github.com/symfony/symfony.git
+
+[twig]
+    git=http://github.com/fabpot/Twig.git
+
+[twig-extensions]
+    git=http://github.com/fabpot/Twig-extensions.git
+
+[monolog]
+    git=http://github.com/Seldaek/monolog.git
+
+[assetic]
+    git=git://github.com/kriswallsmith/assetic.git
+
+[metadata]
+    git=http://github.com/schmittjoh/metadata.git
+
+[swiftmailer]
+    git=http://github.com/swiftmailer/swiftmailer.git
+
+
+
+
+[doctrine-common]
+    git=http://github.com/doctrine/common.git
+
+
+
+
+[Buzz]
+    git=https://github.com/kriswallsmith/Buzz.git
+
+[elastica]
+    git=git://github.com/ruflin/Elastica.git
+
+[imagine]
+    git=http://github.com/avalanche123/Imagine.git
+
+[pagerfanta]
+    git=http://github.com/whiteoctober/Pagerfanta.git
+
+[KnpMenu]
+    git=https://github.com/knplabs/KnpMenu.git
+
+
+
+
+[SensioDistributionBundle]
+    git=http://github.com/sensio/SensioDistributionBundle.git
+    target=/bundles/Sensio/Bundle/DistributionBundle
+
+[SensioFrameworkExtraBundle]
+    git=http://github.com/sensio/SensioFrameworkExtraBundle.git
+    target=/bundles/Sensio/Bundle/FrameworkExtraBundle
+
+[JMSSerializerBundle]
+    git=http://github.com/schmittjoh/JMSSerializerBundle.git
+    target=/bundles/JMS/SerializerBundle
+
+[AsseticBundle]
+    git=http://github.com/symfony/AsseticBundle.git
+    target=/bundles/Symfony/Bundle/AsseticBundle
+
+
+
+
+[FOSCommentBundle]
+    git=git://github.com/FriendsOfSymfony/FOSCommentBundle.git
+    target=/bundles/FOS/CommentBundle
+
+[FOSJsRoutingBundle]
+    git=http://github.com/FriendsOfSymfony/FOSJsRoutingBundle.git
+    target=/bundles/FOS/JsRoutingBundle
+
+
+
+
+[FOQElasticaBundle]
+    git=http://github.com/Exercise/FOQElasticaBundle.git
+    target=/bundles/FOQ/ElasticaBundle
+
+[PagerfantaBundle]
+    git=http://github.com/whiteoctober/WhiteOctoberPagerfantaBundle.git
+    target=/bundles/WhiteOctober/PagerfantaBundle
+
+[ImagineBundle]
+    git=http://github.com/avalanche123/AvalancheImagineBundle.git
+    target=/bundles/Avalanche/Bundle/ImagineBundle
+
+[KnpMenuBundle]
+    git=https://github.com/knplabs/KnpMenuBundle.git
+    target=bundles/Knp/Bundle/MenuBundle
+
