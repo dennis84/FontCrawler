@@ -7,14 +7,12 @@ class FileResource
     protected $path;
     protected $content;
     protected $host;
-    protected $fromFilsystem;
 
-    public function __construct($path, $content = '', $host, $fromFilsystem = false)
+    public function __construct($path, $content = '', $host)
     {
-        $this->path          = $path;
-        $this->content       = $content;
-        $this->host          = $host;
-        $this->fromFilsystem = $fromFilsystem;
+        $this->path    = $path;
+        $this->content = $content;
+        $this->host    = $host;
     }
 
     public function getPath()
@@ -30,10 +28,5 @@ class FileResource
     public function getHost()
     {
         return $this->host;
-    }
-
-    public function getFromFilesystem()
-    {
-        return $this->fromFilsystem;
     }
 }

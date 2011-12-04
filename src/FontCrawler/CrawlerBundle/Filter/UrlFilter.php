@@ -32,7 +32,7 @@ class UrlFilter implements FilterInterface
         foreach ($matches as $match) {
             $node = new Node();
             $node->setKey('url');
-            $node->setValue($match['url']);
+            $node->setValue(preg_replace('/[\"\']/', '', $match['url']));
 
             $output[] = $node;
         }

@@ -19,7 +19,7 @@ class FontFactory
         $this->browser    = $browser;
     }
 
-    public function createFromHtml($input, $host, $fromFilsystem = false)
+    public function createFromHtml($input, $host)
     {
         $this->domCrawler->clear();
         $this->domCrawler->addHtmlContent($input);
@@ -28,35 +28,25 @@ class FontFactory
         $fontFaces = array();
 
         foreach ($links as $link) {
-            $fileResource = $this->getLinkResource($link, $host, $fromFilsystem);
+            $fileResource = $this->getLinkResource($link, $host);
             if (!$fileResource) {
                 continue;
             }
 
-            $fontFaces = array_merge(
+            /*$fontFaces = array_merge(
                 $fontFaces,
                 $this->findFontFaces($fileResource)
-            );
+            );*/
         }
 
         return $fontFaces;
     }
 
-    public function getLinkResource($link, $host, $fromFilsystem = false)
+    public function getLinkResource($link, $host)
     {
+        // The resource points from the webroot path.
         if (0 === strpos($link, '/')) {
-            $link = substr($link, 1);
-        }
-
-        if ($fromFilsystem) {
-            $file = $host . '/' . $link;
-            if (!file_exists($file)) {
-                throw new \InvalidArgumentException(
-                    sprintf('The file "%s" for link "%s" does not exists.', $file, $link)
-                );
-            }
-
-            return new FileResource($file, file_get_contents($file), $host, $fromFilsystem);
+            $path = $this->mergePaths($host, $link);
         }
 
         $request = Request::create($host);
@@ -68,8 +58,19 @@ class FontFactory
         $status   = $response->getStatusCode();
 
         if (200 === $status) {
-            return new FileResource($link, $response->getContent(), $host, $fromFilsystem);
+            return new FileResource($link, $response->getContent(), $host);
         }
+    }
+
+    private function mergePaths($base, $source)
+    {
+        // Appends a trailing slash at the end
+        // of each base path.
+        if (strlen($base) - 1 !== strrpos($base, '/')) {
+            $base .= '/';
+        }
+
+        return $base . $source;
     }
 
     private function findLinks(DomCrawler $crawler)
@@ -97,15 +98,9 @@ class FontFactory
                 $fontFace->setFontFamily($node->getFontFamily());
                 $fontFace->setFontStyle($node->getFontStyle());
                 $fontFace->setFontWeight($node->getFontWeight());
-                
 
                 foreach ($node->getSrc() as $source) {
-                    $source = trim($source, "'");
-                    $source = $factory->getLinkResource(
-                        $source,
-                        $fileResource->getHost(),
-                        $fileResource->getFromFilesystem()
-                    );
+                    $source = $factory->getLinkResource($source, $fileResource->getHost());
 
                     if (!$source) {
                         continue;
@@ -118,5 +113,27 @@ class FontFactory
             });
 
         return $fontFaces;
+    }
+
+    /**
+     * Cleans a relative path. This will make a path:
+     *
+     * like: /var/www/demo/../demo/
+     * to:   /var/www/demo/
+     *
+     * Note: The level of backwarding is 1 /var/www/demo/../../www
+     *       will not supported at the moment.
+     *
+     * @param string $path The path to clean
+     *
+     * @return string
+     */
+    public function cleanRelativePath($path)
+    {
+        if (false !== strpos($path, '../..')) {
+            throw new \InvalidArgumentException('You can go only one level backwards.');
+        }
+
+        return preg_replace('/\w+\/\.\.\//', '', $path);
     }
 }

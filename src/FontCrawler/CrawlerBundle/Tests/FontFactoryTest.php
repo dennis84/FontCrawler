@@ -28,15 +28,23 @@ class FontFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $result = $this->factory->createFromHtml(
             $this->loadHtmlFile('index.html'),
-            __DIR__.'/Fixures',
-            true
+            'http://test.fontcrawler.com/'
         );
 
-        print_r($result);
+        //print_r($result);
     }
 
     private function loadHtmlFile($name)
     {
-        return file_get_contents(__DIR__.'/Fixures/'.$name);
+        $result = file_get_contents('http://test.fontcrawler.com/' . $name);
+
+        if (false === $result) {
+            $this->markTestIncomplete(
+                'The test could not completed. Maybe you must set'.
+                'the test enviroment in your web server configuration.'
+            );
+        }
+
+        return $result;
     }
 }
