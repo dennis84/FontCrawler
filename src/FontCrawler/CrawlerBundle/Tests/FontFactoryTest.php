@@ -26,12 +26,12 @@ class FontFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateFromHtml()
     {
-        $result = $this->factory->createFromHtml(
+         $result = $this->factory->createFromHtml(
             $this->loadHtmlFile('index.html'),
             'http://test.fontcrawler.com/'
         );
 
-        //print_r($result);
+        print_r($result);
     }
 
     private function loadHtmlFile($name)

@@ -2,31 +2,26 @@
 
 namespace FontCrawler\CrawlerBundle;
 
+use FontCrawler\CrawlerBundle\Util\FileLocator;
+
 class FileResource
 {
-    protected $path;
+    protected $fileLocator;
     protected $content;
-    protected $host;
 
-    public function __construct($path, $content = '', $host)
+    public function __construct(FileLocator $fileLocator, $content = '')
     {
-        $this->path    = $path;
-        $this->content = $content;
-        $this->host    = $host;
+        $this->fileLocator = $fileLocator;
+        $this->content     = $content;
     }
 
-    public function getPath()
+    public function getFileLocator()
     {
-        return $this->path;
+        return $this->fileLocator;
     }
 
     public function getContent()
     {
         return $this->content;
-    }
-
-    public function getHost()
-    {
-        return $this->host;
     }
 }
