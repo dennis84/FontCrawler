@@ -25,7 +25,7 @@ class UrlFilterTest extends \PHPUnit_Framework_TestCase
             ->setInput($this->baseNode)
             ->filter(new UrlFilter(), function (NodeInterface $node) use ($test) {
                 $test->assertEquals('url', $node->getKey());
-                $test->assertEquals('"img.png"', $node->getValue());
+                $test->assertEquals('img.png', $node->getValue());
             });
     }
 

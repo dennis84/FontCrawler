@@ -23,7 +23,7 @@ class FontFaceFilterTest extends \PHPUnit_Framework_TestCase
             ->setInput(file_get_contents($this->fileA))
             ->filter(new FontFaceFilter(), function (NodeInterface $node) use ($test) {
                 $test->assertEquals('@font-face', $node->getKey());
-                $test->assertTrue(is_array($node->getSrc()));
+                $test->assertTrue(is_array($node->getSources()));
             });
     }
 

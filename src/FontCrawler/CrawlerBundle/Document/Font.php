@@ -52,7 +52,7 @@ class Font
 
     /**
      * @var array
-     * @MongoDB\Field(type="collection")
+     * @MongoDB\Field(type="hash")
      */
     protected $sources = array();
 
@@ -141,9 +141,9 @@ class Font
      *
      * @param string $source The source
      */
-    public function addSource($source)
+    public function addSource($extension, $source)
     {
-        $this->sources[] = $source;
+        $this->sources[$extension] = $source;
     }
 
     /**

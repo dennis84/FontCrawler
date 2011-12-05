@@ -1,12 +1,14 @@
 <div class="font-item">
-    <style>
+    <style type="text/css">
     @font-face {
-        font-family: '{{ font.id }}';
-        src: url("{{ font.sources[0] }}");
+        font-family: "{{ font.id }}";
+        {% for extension, source in font.sources %}
+        src: url("{{ source }}") format("{{ extension }}");
+        {% endfor %}
     }
     </style>
     <div>{{ font.fontFamily }}</div>
-    <div style="font-family:'{{ font.id }}'; font-size:46px; color:#ff0000">
+    <div style="font-family:'{{ font.id }}'; font-size:46px; color:#333">
         the quick brown fox jumps over the lazy dog
     </div>
 </div>

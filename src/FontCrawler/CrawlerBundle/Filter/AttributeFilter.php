@@ -47,7 +47,7 @@ class AttributeFilter implements FilterInterface
         foreach ($matches as $match) {
             $node = new Node();
             $node->setKey($match['key']);
-            $node->setValue($match['value']);
+            $node->setValue(preg_replace('/[\"\']/', '', $match['value']));
 
             $output[] = $node;
         }

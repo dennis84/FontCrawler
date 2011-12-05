@@ -10,6 +10,7 @@ use FontCrawler\CrawlerBundle\Crawler as CssCrawler;
 use FontCrawler\CrawlerBundle\Node\NodeInterface;
 use FontCrawler\CrawlerBundle\Document\Font;
 use FontCrawler\CrawlerBundle\Util\FileLocator;
+use FontCrawler\CrawlerBundle\Util\FileResource;
 
 class FontFactory
 {
@@ -25,8 +26,8 @@ class FontFactory
         $this->domCrawler->clear();
         $this->domCrawler->addHtmlContent($input);
 
-        $links     = $this->findLinks($this->domCrawler);
-        $fontFaces = array();
+        $links = $this->findLinks($this->domCrawler);
+        $fonts = array();
 
         foreach ($links as $link) {
             $locator = new FileLocator();
@@ -38,30 +39,26 @@ class FontFactory
                 continue;
             }
 
-            $fileResource = new FileResource($locator, $response->getContent());
-
-            $fontFaces = array_merge(
-                $fontFaces,
-                $this->findFontFaces($fileResource)
-            );
+            $resource = new FileResource($locator, $response->getContent());
+            $fonts    = array_merge($fonts, $this->findFontFaces($resource));
         }
 
-        return $fontFaces;
+        return $fonts;
     }
 
     private function findFontFaces(FileResource $fileResource)
     {
         $factory = $this;
 
-        $fontFaces = $this->cssCrawler
+        $fonts = $this->cssCrawler
             ->setInput($fileResource->getContent())
             ->filter('@font-face', function(NodeInterface $node) use ($factory, $fileResource) {
-                $fontFace = new Font();
-                $fontFace->setFontFamily($node->getFontFamily());
-                $fontFace->setFontStyle($node->getFontStyle());
-                $fontFace->setFontWeight($node->getFontWeight());
+                $font = new Font();
+                $font->setFontFamily($node->getFontFamily());
+                $font->setFontStyle($node->getFontStyle());
+                $font->setFontWeight($node->getFontWeight());
 
-                foreach ($node->getSrc() as $source) {
+                foreach ($node->getSources() as $extension => $source) {
                     $locator      = $fileResource->getFileLocator();
                     $resourcePath = $locator->find($source);
 
@@ -70,13 +67,13 @@ class FontFactory
                         continue;
                     }
 
-                    $fontFace->addSource($resourcePath);
+                    $font->addSource($extension, $resourcePath);
                 }
 
-                return $fontFace;
+                return $font;
             });
 
-        return $fontFaces;
+        return $fonts;
     }
 
     private function findLinks(DomCrawler $crawler)

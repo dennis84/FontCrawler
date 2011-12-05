@@ -58,7 +58,7 @@ class FontFaceFilter implements FilterInterface
                 Crawler::create()
                     ->setInput($node->getValue())
                     ->filter(new UrlFilter(), function (NodeInterface $node) use ($fontFace) {
-                        $fontFace->addSrc($node->getValue());
+                        $fontFace->addSource($node->getExtension(), $node->getValue());
                     });
 
                 $filter->addNode($fontFace);

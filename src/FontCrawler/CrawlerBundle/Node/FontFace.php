@@ -36,7 +36,7 @@ class FontFace extends Node
     /**
      * @var array
      */
-    protected $src = array();
+    protected $sources = array();
 
     /**
      * Sets the font family.
@@ -101,11 +101,11 @@ class FontFace extends Node
     /**
      * Sets the font sources.
      *
-     * @param array $src The font sources
+     * @param array $sources The font sources
      */
-    public function setSrc(array $src)
+    public function setSources(array $sources)
     {
-        $this->src = $src;
+        $this->sources = $sources;
     }
 
     /**
@@ -113,9 +113,9 @@ class FontFace extends Node
      *
      * @param string $file The source file
      */
-    public function addSrc($file)
+    public function addSource($extension, $source)
     {
-        $this->src[] = $file;
+        $this->sources[$extension] = $source;
     }
 
     /**
@@ -123,8 +123,8 @@ class FontFace extends Node
      *
      * @return array
      */
-    public function getSrc()
+    public function getSources()
     {
-        return $this->src;
+        return $this->sources;
     }
 }

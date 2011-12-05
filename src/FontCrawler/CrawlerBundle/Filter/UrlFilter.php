@@ -2,7 +2,7 @@
 
 namespace FontCrawler\CrawlerBundle\Filter;
 
-use FontCrawler\CrawlerBundle\Node\Node;
+use FontCrawler\CrawlerBundle\Node\Url;
 
 /**
  * UrlFilter.
@@ -30,9 +30,12 @@ class UrlFilter implements FilterInterface
         $output = array();
 
         foreach ($matches as $match) {
-            $node = new Node();
+            $file = preg_replace('/[\"\']/', '', $match['url']);
+
+            $node = new Url();
             $node->setKey('url');
-            $node->setValue(preg_replace('/[\"\']/', '', $match['url']));
+            $node->setValue($file);
+            $node->setExtension(pathinfo($file, PATHINFO_EXTENSION));
 
             $output[] = $node;
         }

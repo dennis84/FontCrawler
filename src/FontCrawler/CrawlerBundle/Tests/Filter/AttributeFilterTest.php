@@ -27,7 +27,7 @@ class AttributeFilterTest extends \PHPUnit_Framework_TestCase
             ->setInput($this->baseNode)
             ->filter(new AttributeFilter('background'), function (NodeInterface $node) use ($test) {
                 $test->assertEquals('background', $node->getKey());
-                $test->assertEquals('url("img.png") no-repeat', $node->getValue());
+                $test->assertEquals('url(img.png) no-repeat', $node->getValue());
             });
         $this->assertEquals(1, $crawler->count());
 
