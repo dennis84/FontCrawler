@@ -6,7 +6,7 @@ use Symfony\Component\DomCrawler\Crawler as DomCrawler;
 use Symfony\Component\HttpFoundation\Request;
 use Buzz\Browser;
 
-use FontCrawler\CrawlerBundle\Crawler as CssCrawler;
+use FontCrawler\CrawlerBundle\Util\Crawler as CssCrawler;
 use FontCrawler\CrawlerBundle\Node\NodeInterface;
 use FontCrawler\CrawlerBundle\Document\Font;
 use FontCrawler\CrawlerBundle\Util\FileLocator;

@@ -4,7 +4,7 @@ namespace FontCrawler\CrawlerBundle\Filter;
 
 use FontCrawler\CrawlerBundle\Node\NodeInterface;
 use FontCrawler\CrawlerBundle\Node\FontFace;
-use FontCrawler\CrawlerBundle\Crawler;
+use FontCrawler\CrawlerBundle\Util\Crawler;
 
 /**
  * FontFaceFilter.

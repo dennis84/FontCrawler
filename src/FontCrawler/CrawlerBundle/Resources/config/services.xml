@@ -29,34 +29,8 @@
         </service>
 
         <service
-            id="font_crawler.crawler.filter.rule"
-            class="FontCrawler\CrawlerBundle\Filter\RuleFilter"
-        />
-
-        <service
-            id="font_crawler.crawler.filter.attribute"
-            class="FontCrawler\CrawlerBundle\Filter\AttributeFilter"
-        />
-
-        <service
-            id="font_crawler.crawler.filter.url"
-            class="FontCrawler\CrawlerBundle\Filter\UrlFilter"
-        />
-
-        <service
-            id="font_crawler.crawler.filter.font_face"
-            class="FontCrawler\CrawlerBundle\Filter\FontFaceFilter"
-        />
-
-        <service
             id="font_crawler.crawler"
-            class="FontCrawler\CrawlerBundle\Crawler">
-            <argument type="collection">
-                <argument type="service" id="font_crawler.crawler.filter.rule" />
-                <argument type="service" id="font_crawler.crawler.filter.attribute" />
-                <argument type="service" id="font_crawler.crawler.filter.url" />
-                <argument type="service" id="font_crawler.crawler.filter.font_face" />
-            </argument>
+            class="FontCrawler\CrawlerBundle\Util\Crawler">
         </service>
     </services>
 </container>

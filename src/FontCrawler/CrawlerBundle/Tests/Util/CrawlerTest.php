@@ -1,8 +1,8 @@
 <?php
 
-namespace FontCrawler\CrawlerBundle\Test;
+namespace FontCrawler\CrawlerBundle\Tests\Util;
 
-use FontCrawler\CrawlerBundle\Crawler;
+use FontCrawler\CrawlerBundle\Util\Crawler;
 use FontCrawler\CrawlerBundle\Filter\RuleFilter;
 use FontCrawler\CrawlerBundle\Filter\AttributeFilter;
 use FontCrawler\CrawlerBundle\Filter\FontFaceFilter;
@@ -95,8 +95,8 @@ class CrawlerTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->fileA   = __DIR__ . '/Fixures/css/fonts.css';
-        $this->fileB   = __DIR__ . '/Fixures/css/style.css';
-        $this->fileC   = __DIR__ . '/Fixures/css/fonts-compressed.css';
+        $this->fileA   = __DIR__ . '/../Fixures/css/fonts.css';
+        $this->fileB   = __DIR__ . '/../Fixures/css/style.css';
+        $this->fileC   = __DIR__ . '/../Fixures/css/fonts-compressed.css';
     }
 }

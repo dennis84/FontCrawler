@@ -1,6 +1,6 @@
 <?php
 
-namespace FontCrawler\CrawlerBundle;
+namespace FontCrawler\CrawlerBundle\Util;
 
 use FontCrawler\CrawlerBundle\Filter\FilterInterface;
 use FontCrawler\CrawlerBundle\Filter\RuleFilter;

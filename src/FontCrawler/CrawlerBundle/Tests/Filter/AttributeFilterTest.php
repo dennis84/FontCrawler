@@ -2,7 +2,7 @@
 
 namespace FontCrawler\CrawlerBundle\Test\Filter;
 
-use FontCrawler\CrawlerBundle\Crawler;
+use FontCrawler\CrawlerBundle\Util\Crawler;
 use FontCrawler\CrawlerBundle\Filter\RuleFilter;
 use FontCrawler\CrawlerBundle\Filter\AttributeFilter;
 use FontCrawler\CrawlerBundle\Filter\FontFaceFilter;

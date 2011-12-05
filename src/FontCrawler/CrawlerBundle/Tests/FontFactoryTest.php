@@ -5,7 +5,7 @@ namespace FontCrawler\CrawlerBundle\Tests;
 use FontCrawler\CrawlerBundle\FontFactory;
 use Symfony\Component\DomCrawler\Crawler as DomCrawler;
 use Symfony\Component\HttpFoundation\Request;
-use FontCrawler\CrawlerBundle\Crawler as CssCrawler;
+use FontCrawler\CrawlerBundle\Util\Crawler as CssCrawler;
 use Buzz\Browser;
 
 class FontFactoryTest extends \PHPUnit_Framework_TestCase
@@ -26,12 +26,12 @@ class FontFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateFromHtml()
     {
-         $result = $this->factory->createFromHtml(
+         $fonts = $this->factory->createFromHtml(
             $this->loadHtmlFile('index.html'),
             'http://test.fontcrawler.com/'
         );
 
-        print_r($result);
+        $this->assertEquals(2, count($fonts));
     }
 
     private function loadHtmlFile($name)
