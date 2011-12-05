@@ -1,14 +1,14 @@
 <?php
 
-namespace FontCrawler\FrontendBundle;
+namespace FontCrawler\CoreBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
- * FontCrawlerFrontendBundle.
+ * FontCrawlerCoreBundle.
  *
  * @author Dennis Dietrich <d.dietrich84@googlemail.com>
  */
-class FontCrawlerFrontendBundle extends Bundle
+class FontCrawlerCoreBundle extends Bundle
 {
 }

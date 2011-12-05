@@ -24,14 +24,12 @@ use Symfony\Component\Config\FileLocator;
 class FontCrawlerCrawlerExtension extends Extension
 {
     /**
-     * Configures the di container.
-     *
-     * @param array            $configs   The app configs
-     * @param ContainerBuilder $container The di container builder
+     * {@inheritdoc}
      */
     public function load(array $configs, ContainerBuilder $container)
     {
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
+        $loader->load('manager.xml');
     }
 }

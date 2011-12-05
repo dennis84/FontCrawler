@@ -1,0 +1,12 @@
+<div class="font-item">
+    <style>
+    @font-face {
+        font-family: '{{ font.id }}';
+        src: url("{{ font.sources[0] }}");
+    }
+    </style>
+    <div>{{ font.fontFamily }}</div>
+    <div style="font-family:'{{ font.id }}'; font-size:46px; color:#ff0000">
+        the quick brown fox jumps over the lazy dog
+    </div>
+</div>

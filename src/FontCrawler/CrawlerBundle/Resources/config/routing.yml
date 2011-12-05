@@ -1,0 +1,3 @@
+media:
+    resource: "@FontCrawlerCrawlerBundle/Controller/SearchController.php"
+    type:     annotation

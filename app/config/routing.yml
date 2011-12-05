@@ -1,3 +1,2 @@
-frontend:
-    resource: "@FontCrawlerFrontendBundle/Controller/HomeController.php"
-    type:     annotation
+crawler:
+    resource: "@FontCrawlerCrawlerBundle/Resources/config/routing.yml"

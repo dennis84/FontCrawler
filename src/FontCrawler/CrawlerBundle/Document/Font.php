@@ -11,32 +11,60 @@
 
 namespace FontCrawler\CrawlerBundle\Document;
 
+use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
+
 /**
- * FontFace.
+ * Font.
  *
  * @author Dennis Dietrich <d.dietrich84@googlemail.com>
+ *
+ * @MongoDB\Document(
+ *   collection="fonts"
+ * )
  */
-class FontFace
+class Font
 {
     /**
+     * Unique ID.
+     *
      * @var string
+     * @MongoDB\Id()
+     */
+    protected $id;
+
+    /**
+     * @var string
+     * @MongoDB\Field(type="string")
      */
     protected $fontFamily;
 
     /**
      * @var string
+     * @MongoDB\Field(type="string")
      */
     protected $fontWeight;
 
     /**
      * @var string
+     * @MongoDB\Field(type="string")
      */
     protected $fontStyle;
 
     /**
      * @var array
+     * @MongoDB\Field(type="collection")
      */
     protected $sources = array();
+
+    /**
+     * Gets the font id.
+     *
+     * @return string
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 
     /**
      * Sets the font family.

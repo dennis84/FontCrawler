@@ -8,7 +8,7 @@ use Buzz\Browser;
 
 use FontCrawler\CrawlerBundle\Crawler as CssCrawler;
 use FontCrawler\CrawlerBundle\Node\NodeInterface;
-use FontCrawler\CrawlerBundle\Document\FontFace;
+use FontCrawler\CrawlerBundle\Document\Font;
 use FontCrawler\CrawlerBundle\Util\FileLocator;
 
 class FontFactory
@@ -34,9 +34,7 @@ class FontFactory
             $resourcePath = $locator->find($link, true);
 
             $response = $this->browser->get($resourcePath);
-            $status   = $response->getStatusCode();
-    
-            if (200 !== $status) {
+            if (200 !== $response->getStatusCode()) {
                 continue;
             }
 
@@ -58,7 +56,7 @@ class FontFactory
         $fontFaces = $this->cssCrawler
             ->setInput($fileResource->getContent())
             ->filter('@font-face', function(NodeInterface $node) use ($factory, $fileResource) {
-                $fontFace = new FontFace();
+                $fontFace = new Font();
                 $fontFace->setFontFamily($node->getFontFamily());
                 $fontFace->setFontStyle($node->getFontStyle());
                 $fontFace->setFontWeight($node->getFontWeight());
@@ -66,6 +64,11 @@ class FontFactory
                 foreach ($node->getSrc() as $source) {
                     $locator      = $fileResource->getFileLocator();
                     $resourcePath = $locator->find($source);
+
+                    $response = $factory->browser->get($resourcePath);
+                    if (200 !== $response->getStatusCode()) {
+                        continue;
+                    }
 
                     $fontFace->addSource($resourcePath);
                 }
@@ -88,5 +91,10 @@ class FontFactory
         });
 
         return array_filter($links);
+    }
+
+    public function getBrowser()
+    {
+        return $this->browser;
     }
 }

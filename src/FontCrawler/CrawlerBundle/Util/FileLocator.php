@@ -164,7 +164,12 @@ class FileLocator
      */
     private function isValidResourceFile($resource)
     {
-        $extension = substr(strrchr($resource, '.'), 1);
-        return in_array($extension, $this->resourceTypes);
+        $queryPosition = strpos($resource, '?');
+
+        if (false !== $queryPosition) {
+            $resource = substr($resource, 0, $queryPosition);
+        }
+
+        return (Boolean) pathinfo($resource, PATHINFO_EXTENSION);
     }
 }

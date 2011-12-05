@@ -1,0 +1,12 @@
+doctrine_mongodb:
+    connections:
+        default:
+            server: mongodb://localhost:27017
+            options:
+                connect: true
+                persist: fontcrawler
+    default_database: fontcrawler_%kernel.environment%
+    document_managers:
+        default:
+            metadata_cache_driver: array
+            auto_mapping: true

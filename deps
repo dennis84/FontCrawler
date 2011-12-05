@@ -25,6 +25,11 @@
 [doctrine-common]
     git=http://github.com/doctrine/common.git
 
+[doctrine-mongodb]
+    git=git://github.com/doctrine/mongodb.git
+
+[doctrine-mongodb-odm]
+    git=http://github.com/doctrine/mongodb-odm.git
 
 
 
@@ -45,6 +50,9 @@
 
 
 
+[DoctrineMongoDBBundle]
+    git=http://github.com/symfony/DoctrineMongoDBBundle.git
+    target=/bundles/Symfony/Bundle/DoctrineMongoDBBundle
 
 [SensioDistributionBundle]
     git=http://github.com/sensio/SensioDistributionBundle.git

@@ -14,23 +14,17 @@ class AppKernel extends Kernel
             new Symfony\Bundle\TwigBundle\TwigBundle(),
             new Symfony\Bundle\MonologBundle\MonologBundle(),
             new Symfony\Bundle\AsseticBundle\AsseticBundle(),
+            new Symfony\Bundle\DoctrineMongoDBBundle\DoctrineMongoDBBundle(),
 
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
-            //new JMS\SerializerBundle\JMSSerializerBundle(),
-            //new FOS\CommentBundle\FOSCommentBundle(),
-            //new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
-            //new Avalanche\Bundle\ImagineBundle\AvalancheImagineBundle(),
-            //new Knp\Bundle\MenuBundle\KnpMenuBundle(),
-            //new FOQ\ElasticaBundle\FOQElasticaBundle(),
-            //new WhiteOctober\PagerfantaBundle\WhiteOctoberPagerfantaBundle(),
-            
+
             new FontCrawler\CrawlerBundle\FontCrawlerCrawlerBundle(),
-            new FontCrawler\FrontendBundle\FontCrawlerFrontendBundle(),
+            new FontCrawler\DocumentBundle\FontCrawlerDocumentBundle(),
+            new FontCrawler\CoreBundle\FontCrawlerCoreBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
-            //$bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
         }
 
         return $bundles;

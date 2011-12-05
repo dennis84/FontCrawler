@@ -31,13 +31,16 @@ class CrawlerCommand extends ContainerAwareCommand
         $hosts   = $this->getContainer()->get('font_crawler.crawler.repository.host')->findHosts();
         $browser = $this->getContainer()->get('buzz.browser');
         $factory = $this->getContainer()->get('font_crawler.crawler.font_factory');
+        $manager = $this->getContainer()->get('font_crawler.crawler.manager.font');
 
         foreach ($hosts as $host) {
             $output->writeln(sprintf('Crawling in "%s".', $host));
             $response = $browser->get($host);
             if (200 === $response->getStatusCode()) {
-                $fontFaces = $factory->createFromHtml($response->getContent(), $host);
-                print_r($fontFaces);
+                $fonts = $factory->createFromHtml($response->getContent(), $host);
+                foreach ($fonts as $font) {
+                    $manager->updateFont($font);
+                }
             } else {
                 $output->writeln(sprintf('Could not connect to "%s".', $host));
             }
