@@ -15,11 +15,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 /**
- * SearchController.
+ * FontController.
  *
  * @author Dennis Dietrich <d.dietrich84@googlemail.com>
  */
-class SearchController extends Controller
+class FontController extends Controller
 {
     /**
      * The index action.
@@ -29,6 +29,16 @@ class SearchController extends Controller
     public function searchAction()
     {
         return $this->render('FontCrawlerCrawlerBundle:Search:form.html.twig');
+    }
+
+    /**
+     * The search term action.
+     *
+     * @Route("/search/{term}")
+     */
+    public function searchTermAction($term)
+    {
+        die('Yo');
     }
 
     /**

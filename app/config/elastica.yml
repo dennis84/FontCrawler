@@ -1,0 +1,18 @@
+foq_elastica:
+    clients:
+        default:
+            host: localhost,
+            port: 9200
+    indexes:
+        website:
+            client: default
+            types:
+                font:
+                    mappings:
+                        fontFamily: { boost: 5 }
+                        sources:  { boost: 3 }
+                    doctrine:
+                        driver: mongodb
+                        model: FontCrawler\CrawlerBundle\Document\Font
+                        provider:
+                        finder:

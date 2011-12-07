@@ -17,6 +17,7 @@ class AppKernel extends Kernel
             new Symfony\Bundle\DoctrineMongoDBBundle\DoctrineMongoDBBundle(),
 
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
+            new FOQ\ElasticaBundle\FOQElasticaBundle(),
 
             new FontCrawler\CrawlerBundle\FontCrawlerCrawlerBundle(),
             new FontCrawler\DocumentBundle\FontCrawlerDocumentBundle(),

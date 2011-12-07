@@ -1,6 +1,7 @@
 imports:
     - { resource: security.yml }
     - { resource: doctrine.yml }
+    - { resource: elastica.yml }
 
 framework:
     #esi:             ~
@@ -23,7 +24,7 @@ twig:
 assetic:
     debug:          %kernel.debug%
     use_controller: false
-    bundles:        [ ]
+    bundles: [ FontCrawlerCoreBundle ]
     filters:
         cssrewrite: ~
         # closure:

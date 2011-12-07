@@ -8,7 +8,11 @@
 
     <body>
         {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
+
+        {% block javascripts %}
+            {% stylesheets "@FontCrawlerCoreBundle/Resources/assets/js/ender.js" %}
+            <link rel="stylesheet" href="{{ asset_url }}" />
+            {% endstylesheets %}
+        {% endblock %}
     </body>
 </html>
-
