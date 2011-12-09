@@ -1,0 +1,11 @@
+<ul>
+    {% for font in fonts %}
+    <li>
+        {% include "FontCrawlerCrawlerBundle:Font:fontItem.html.twig" with { "font": font } %}
+    </li>
+    {% else %}
+        <li>
+            No fonts yet!
+        </li>
+    {% endfor %}
+</ul>

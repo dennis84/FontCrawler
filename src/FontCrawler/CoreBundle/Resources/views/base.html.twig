@@ -9,10 +9,17 @@
     <body>
         {% block body %}{% endblock %}
 
+        {% javascripts
+            "@FOSJsRoutingBundle/Resources/public/js/router.js"
+            "@FontCrawlerCoreBundle/Resources/assets/js/jquery.js"
+            "@FontCrawlerCoreBundle/Resources/assets/js/jquery-ui.js"
+            "@FontCrawlerCoreBundle/Resources/assets/js/elastic.js" %}
+        <script src="{{ asset_url }}"></script>
+        {% endjavascripts %}
+
+        <script src="{{ path("fos_js_routing_js", { "callback": "fos.Router.setData" }) }}"></script>
+
         {% block javascripts %}
-            {% stylesheets "@FontCrawlerCoreBundle/Resources/assets/js/ender.js" %}
-            <link rel="stylesheet" href="{{ asset_url }}" />
-            {% endstylesheets %}
         {% endblock %}
     </body>
 </html>

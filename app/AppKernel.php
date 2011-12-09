@@ -18,6 +18,7 @@ class AppKernel extends Kernel
 
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new FOQ\ElasticaBundle\FOQElasticaBundle(),
+            new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
 
             new FontCrawler\CrawlerBundle\FontCrawlerCrawlerBundle(),
             new FontCrawler\DocumentBundle\FontCrawlerDocumentBundle(),

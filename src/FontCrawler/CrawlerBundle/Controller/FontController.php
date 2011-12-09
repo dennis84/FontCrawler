@@ -11,6 +11,7 @@
 
 namespace FontCrawler\CrawlerBundle\Controller;
 
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
@@ -22,35 +23,33 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 class FontController extends Controller
 {
     /**
-     * The index action.
-     *
-     * @Route("/")
-     */
-    public function searchAction()
-    {
-        return $this->render('FontCrawlerCrawlerBundle:Search:form.html.twig');
-    }
-
-    /**
      * The search term action.
      *
-     * @Route("/search/{term}")
+     * @Route(
+     *   "/search/{term}",
+     *   name="font_search_term",
+     *   options={"expose"=true}
+     * )
      */
     public function searchTermAction($term)
     {
-        die('Yo');
+        $fonts = $this->get('foq_elastica.finder.doc.font')->find($term, 10);
+
+        return $this->render('FontCrawlerCrawlerBundle:Font:list.html.twig', array(
+            'fonts' => $fonts,
+        ));
     }
 
     /**
      * The result action.
      *
-     * @Route("/fonts")
+     * @Route("/")
      */
-    public function listAction()
+    public function indexAction()
     {
         $fonts = $this->get('font_crawler.crawler.manager.font')->findFonts();
 
-        return $this->render('FontCrawlerCrawlerBundle:Search:list.html.twig', array(
+        return $this->render('FontCrawlerCrawlerBundle:Font:index.html.twig', array(
             'fonts' => $fonts,
         ));
     }
