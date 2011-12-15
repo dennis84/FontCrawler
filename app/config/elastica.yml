@@ -8,26 +8,23 @@ foq_elastica:
             settings:
                 index:
                     analysis:
-                        analyzer:
-                            search_analyzer:
+                        analyzer: 
+                            my_analyzer: 
                                 type: custom
-                                tokenizer: standard
-                                filter: [lowercase, my_ngram]
-
-                        filter:
-                            my_ngram:
-                                type: nGram
-                                min_gram: 2
-                                max_gram: 10
-
-            client: default
+                                tokenizer: lowercase
+                                filter   : [my_ngram]
+                            filter: 
+                                my_ngram: 
+                                    type: "nGram"
+                                    min_gram: 3
+                                    max_gram: 5
             types:
                 font:
                     mappings:
-                        fontFamily: { boost: 10, analyzer: search_analyzer }
-                        sources:  { boost: 8 }
+                        fontFamily: { boost: 10, analyzer: my_analyzer }
+                        sources:    { boost: 8 }
                     doctrine:
                         driver: mongodb
-                        model: FontCrawler\CrawlerBundle\Document\Font
+                        model:  FontCrawler\CrawlerBundle\Document\Font
                         provider:
                         finder:
