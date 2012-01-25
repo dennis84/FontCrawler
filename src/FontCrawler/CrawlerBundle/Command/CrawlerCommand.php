@@ -35,13 +35,17 @@ class CrawlerCommand extends ContainerAwareCommand
 
         foreach ($hosts as $host) {
             $output->writeln(sprintf('Crawling in "%s".', $host));
-            $response = $browser->get($host);
-            if (200 === $response->getStatusCode()) {
-                $fonts = $factory->createFromHtml($response->getContent(), $host);
-                foreach ($fonts as $font) {
-                    $manager->updateFont($font);
+            try {
+                $response = $browser->get($host);
+                if (200 === $response->getStatusCode()) {
+                    $fonts = $factory->createFromHtml($response->getContent(), $host);
+                    foreach ($fonts as $font) {
+                        $manager->updateFont($font);
+                    }
+                } else {
+                    $output->writeln(sprintf('Get invalid response from "%s".', $host));
                 }
-            } else {
+            } catch (\Exception $e) {
                 $output->writeln(sprintf('Could not connect to "%s".', $host));
             }
         }
