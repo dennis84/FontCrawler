@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the fontcrawler package.
+ *
+ * (c) Dennis Dietrich <d.dietrich84@googlemail.com/>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace FontCrawler\CrawlerBundle\Util;
 
 use FontCrawler\CrawlerBundle\Filter\FilterInterface;
@@ -7,6 +16,7 @@ use FontCrawler\CrawlerBundle\Filter\RuleFilter;
 use FontCrawler\CrawlerBundle\Filter\AttributeFilter;
 use FontCrawler\CrawlerBundle\Filter\FontFaceFilter;
 use FontCrawler\CrawlerBundle\Filter\UrlFilter;
+use FontCrawler\CrawlerBundle\Filter\ImportFilter;
 
 /**
  * Crawler.
@@ -96,23 +106,26 @@ class Crawler
             throw new \InvalidArgumentException('The filter does not exists.');
         }
 
-        $return = array();
+        $return = new NodeCollection();
         $nodes  = $filter->filter($this->input);
 
-        if (!is_array($nodes)) {
-            return array();
+        if (0 === $nodes->count()) {
+            return new NodeCollection();
         }
 
         foreach ($nodes as $node) {
             $crawler = $this::create();
             $crawler->setInput($node->getValue());
 
-            $return[] = $closure($node, $crawler);
+            $result = $closure($node, $crawler);
+            if (null !== $result) {
+                $return[] = $result;
+            }
         }
 
         $this->nodeCount = count($nodes);
 
-        return array_filter($return);
+        return $return;
     }
 
     /**
@@ -140,6 +153,10 @@ class Crawler
 
         if (0 === strpos($filter, '@font-face')) {
             return new FontFaceFilter();
+        }
+
+        if (0 === strpos($filter, '@import')) {
+            return new ImportFilter();
         }
     }
 }

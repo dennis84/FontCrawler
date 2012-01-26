@@ -16,33 +16,34 @@ use FontCrawler\CrawlerBundle\Filter\RuleFilter;
 use FontCrawler\CrawlerBundle\Filter\AttributeFilter;
 use FontCrawler\CrawlerBundle\Filter\FontFaceFilter;
 use FontCrawler\CrawlerBundle\Filter\UrlFilter;
+use FontCrawler\CrawlerBundle\Filter\ImportFilter;
 use FontCrawler\CrawlerBundle\Filter\FilterInterface;
 use FontCrawler\CrawlerBundle\Node\NodeInterface;
 
 /**
- * FontFaceFilterTest.
+ * ImportFilterTest.
  *
  * @author Dennis Dietrich <d.dietrich84@googlemail.com>
  */
-class FontFaceFilterTest extends \PHPUnit_Framework_TestCase
+class ImportFilterTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * Tests filter for id.
+     * Tests filter.
      */
     public function testFilter()
     {
+        $file = __DIR__ . '/../Fixures/css/style.css';
         $test = $this;
 
         $crawler = Crawler::create()
-            ->setInput(file_get_contents($this->fileA))
-            ->filter(new FontFaceFilter(), function (NodeInterface $node) use ($test) {
-                $test->assertEquals('@font-face', $node->getKey());
-                $test->assertTrue(is_array($node->getSources()));
-            });
-    }
+            ->setInput(file_get_contents($file))
+            ->filter(new ImportFilter(), function (NodeInterface $node) use ($test) {
+                $expected = array(
+                    'fonts.css',
+                    'tools/fonts.css',
+                );
 
-    protected function setUp()
-    {
-        $this->fileA   = __DIR__ . '/../Fixures/css/fonts.css';
+                $test->assertTrue(in_array($node->getUrl(), $expected));
+            });
     }
 }

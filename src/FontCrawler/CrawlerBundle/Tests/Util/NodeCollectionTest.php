@@ -9,15 +9,21 @@
  * file that was distributed with this source code.
  */
 
-namespace FontCrawler\CoreBundle;
+namespace FontCrawler\CrawlerBundle\Tests\Util;
 
-use Symfony\Component\HttpKernel\Bundle\Bundle;
+use FontCrawler\CrawlerBundle\Util\NodeCollection;
 
 /**
- * FontCrawlerCoreBundle.
+ * NodeCollectionTest.
  *
  * @author Dennis Dietrich <d.dietrich84@googlemail.com>
  */
-class FontCrawlerCoreBundle extends Bundle
+class NodeCollectionTest extends \PHPUnit_Framework_TestCase
 {
+    public function testAdd()
+    {
+        $nodes = new NodeCollection();
+        $nodes[] = 'Hello';
+        $nodes[] = 'World';
+    }
 }

@@ -11,15 +11,18 @@
 
 namespace FontCrawler\CrawlerBundle\Filter;
 
+use FontCrawler\CrawlerBundle\Util\Crawler;
 use FontCrawler\CrawlerBundle\Util\NodeCollection;
-use FontCrawler\CrawlerBundle\Node\Url;
+use FontCrawler\CrawlerBundle\Node\Import;
+use FontCrawler\CrawlerBundle\Filter\UrlFilter;
+use FontCrawler\CrawlerBundle\Node\NodeInterface;
 
 /**
- * UrlFilter.
+ * ImportFilter.
  *
  * @author Dennis Dietrich <d.dietrich84@googlemail.com>
  */
-class UrlFilter implements FilterInterface
+class ImportFilter implements FilterInterface
 {
     /**
      * {@inheritDoc}
@@ -27,7 +30,7 @@ class UrlFilter implements FilterInterface
     public function filter($input)
     {
         preg_match_all(
-            '#url\((?P<url>.*?)[\#\?\)]#u',
+            '#@import\s+(.*);#u',
             $input,
             $matches,
             PREG_SET_ORDER
@@ -36,14 +39,15 @@ class UrlFilter implements FilterInterface
         $output = new NodeCollection();
 
         foreach ($matches as $match) {
-            $file = preg_replace('/[\"\']/', '', $match['url']);
+            Crawler::create()
+                ->setInput($match[1])
+                ->filter(new UrlFilter(), function (NodeInterface $node) use ($output) {
+                    $import = new Import();
+                    $import->setKey('@import');
+                    $import->setUrl($node->getValue());
 
-            $node = new Url();
-            $node->setKey('url');
-            $node->setValue($file);
-            $node->setExtension(pathinfo($file, PATHINFO_EXTENSION));
-
-            $output[] = $node;
+                    $output[] = $import;
+                });
         }
 
         return $output;

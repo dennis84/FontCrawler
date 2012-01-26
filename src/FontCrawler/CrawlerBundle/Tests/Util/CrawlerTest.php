@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the fontcrawler package.
+ *
+ * (c) Dennis Dietrich <d.dietrich84@googlemail.com/>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace FontCrawler\CrawlerBundle\Tests\Util;
 
 use FontCrawler\CrawlerBundle\Util\Crawler;
@@ -10,6 +19,11 @@ use FontCrawler\CrawlerBundle\Filter\UrlFilter;
 use FontCrawler\CrawlerBundle\Filter\FilterInterface;
 use FontCrawler\CrawlerBundle\Node\NodeInterface;
 
+/**
+ * CrawlerTest.
+ *
+ * @author Dennis Dietrich <d.dietrich84@googlemail.com>
+ */
 class CrawlerTest extends \PHPUnit_Framework_TestCase
 {
     /**
@@ -77,6 +91,12 @@ class CrawlerTest extends \PHPUnit_Framework_TestCase
             ->setInput(file_get_contents($this->fileA))
             ->filter('@font-face', function(NodeInterface $node) use ($test) {
                 $test->assertEquals('@font-face', $node->getKey());
+            });
+
+        Crawler::create()
+            ->setInput(file_get_contents($this->fileB))
+            ->filter('@import', function(NodeInterface $node) use ($test) {
+                $test->assertEquals('@import', $node->getKey());
             });
     }
 

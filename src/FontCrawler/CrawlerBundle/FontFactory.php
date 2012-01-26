@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Buzz\Browser;
 
 use FontCrawler\CrawlerBundle\Util\Crawler as CssCrawler;
+use FontCrawler\CrawlerBundle\Util\NodeCollection;
 use FontCrawler\CrawlerBundle\Node\NodeInterface;
 use FontCrawler\CrawlerBundle\Document\Font;
 use FontCrawler\CrawlerBundle\Util\FileLocator;
@@ -34,19 +35,42 @@ class FontFactory
             $locator->setBasePath($host);
             $resourcePath = $locator->find($link, true);
 
+
             $response = $this->browser->get($resourcePath);
             if (200 !== $response->getStatusCode()) {
                 continue;
             }
 
             $resource = new FileResource($locator, $response->getContent());
-            $fonts    = array_merge($fonts, $this->findFontFaces($resource));
+            $fonts = array_merge($fonts, $this->findFontFaces($resource)->toArray());
+            $fonts = array_merge($fonts, $this->findFontFacesFromImportNodes($resource)->toArray());
         }
 
         return $fonts;
     }
 
-    private function findFontFaces(FileResource $fileResource)
+    public function findFontFacesFromImportNodes(FileResource $fileResource)
+    {
+        $factory = $this;
+        $fonts = new NodeCollection();
+
+        $this->cssCrawler
+            ->setInput($fileResource->getContent())
+            ->filter('@import', function (NodeInterface $node) use ($fonts, $factory, $fileResource) {
+                $locator      = $fileResource->getFileLocator();
+                $resourcePath = $locator->find($node->getUrl());
+
+                $response = $factory->browser->get($resourcePath);
+                if (200 === $response->getStatusCode()) {
+                    $resource = new FileResource($locator, $response->getContent());
+                    $fonts->merge($factory->findFontFaces($resource));
+                }
+            });
+
+        return $fonts;
+    }
+
+    public function findFontFaces(FileResource $fileResource)
     {
         $factory = $this;
 
@@ -58,19 +82,22 @@ class FontFactory
                 $font->setFontStyle($node->getFontStyle());
                 $font->setFontWeight($node->getFontWeight());
 
+                $hasSources = true;
                 foreach ($node->getSources() as $extension => $source) {
                     $locator      = $fileResource->getFileLocator();
                     $resourcePath = $locator->find($source);
 
                     $response = $factory->browser->get($resourcePath);
-                    if (200 !== $response->getStatusCode()) {
-                        continue;
+                    if (200 === $response->getStatusCode()) {
+                        $font->addSource($extension, $resourcePath);
+                    } else {
+                        $hasSources = false;
                     }
-
-                    $font->addSource($extension, $resourcePath);
                 }
 
-                return $font;
+                if ($hasSources) {
+                    return $font;
+                }
             });
 
         return $fonts;

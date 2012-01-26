@@ -1,10 +1,20 @@
 <?php
 
+/*
+ * This file is part of the fontcrawler package.
+ *
+ * (c) Dennis Dietrich <d.dietrich84@googlemail.com/>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace FontCrawler\CrawlerBundle\Filter;
 
 use FontCrawler\CrawlerBundle\Node\NodeInterface;
 use FontCrawler\CrawlerBundle\Node\FontFace;
 use FontCrawler\CrawlerBundle\Util\Crawler;
+use FontCrawler\CrawlerBundle\Util\NodeCollection;
 
 /**
  * FontFaceFilter.
@@ -14,25 +24,15 @@ use FontCrawler\CrawlerBundle\Util\Crawler;
 class FontFaceFilter implements FilterInterface
 {
     /**
-     * @var array
-     */
-    protected $nodes;
-
-    /**
-     * Filters the input
-     *
-     * @param string $input The input string
-     *
-     * @return array
+     * {@inheritDoc}
      */
     public function filter($input)
     {
-        $this->output  = array();
-        $filter = $this;
+        $output = new NodeCollection();
 
         $crawler = Crawler::create()
             ->setInput($input)
-            ->filter(new RuleFilter('@font-face'), function (NodeInterface $node) use ($filter) {
+            ->filter(new RuleFilter('@font-face'), function (NodeInterface $node) use ($output) {
                 $fontFace = new FontFace();
                 $fontFace->setKey($node->getKey());
                 $fontFace->setValue($node->getValue());
@@ -61,19 +61,9 @@ class FontFaceFilter implements FilterInterface
                         $fontFace->addSource($node->getExtension(), $node->getValue());
                     });
 
-                $filter->addNode($fontFace);
+                $output[] = $fontFace;
             });
 
-        return $this->nodes;
-    }
-
-    /**
-     * Adds a note to the collection.
-     *
-     * @param NodeInterface $node The node object
-     */
-    public function addNode(NodeInterface $node)
-    {
-        $this->nodes[] = $node;
+        return $output;
     }
 }
