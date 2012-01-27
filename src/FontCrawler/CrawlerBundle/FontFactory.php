@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the fontcrawler package.
+ *
+ * (c) Dennis Dietrich <d.dietrich84@googlemail.com/>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace FontCrawler\CrawlerBundle;
 
 use Symfony\Component\DomCrawler\Crawler as DomCrawler;
@@ -13,35 +22,79 @@ use FontCrawler\CrawlerBundle\Document\Font;
 use FontCrawler\CrawlerBundle\Util\FileLocator;
 use FontCrawler\CrawlerBundle\Util\FileResource;
 
+/**
+ * FontFactory.
+ *
+ * @author Dennis Dietrich <d.dietrich84@googlemail.com>
+ */
 class FontFactory
 {
-    public function __construct(DomCrawler $domCrawler, CssCrawler $cssCrawler, Browser $browser)
-    {
-        $this->domCrawler = $domCrawler;
-        $this->cssCrawler = $cssCrawler;
-        $this->browser    = $browser;
+    /**
+     * @var DomCrawler
+     */
+    protected $domCrawler;
+
+    /**
+     * @var CssCrawler
+     */
+    protected $cssCrawler;
+
+    /**
+     * @var FileLocator
+     */
+    protected $fileLocator;
+
+    /**
+     * @var Browser
+     */
+    protected $browser;
+
+    /**
+     * Constructor.
+     *
+     * @param DomCrawler  $domCrawler  The dom crawler
+     * @param CssCrawler  $cssCrawler  The css crawler
+     * @param FileLocator $fileLocator The file locator
+     * @param Browser     $browser     The browser
+     */
+    public function __construct(
+        DomCrawler $domCrawler,
+        CssCrawler $cssCrawler,
+        FileLocator $fileLocator,
+        Browser $browser
+    ) {
+        $this->domCrawler  = $domCrawler;
+        $this->cssCrawler  = $cssCrawler;
+        $this->fileLocator = $fileLocator;
+        $this->browser     = $browser;
     }
 
+    /**
+     * Creates fonts from host's html.
+     *
+     * @param string $input The html input
+     * @param string $host  The host address
+     *
+     * @return array
+     */
     public function createFromHtml($input, $host)
     {
         $this->domCrawler->clear();
         $this->domCrawler->addHtmlContent($input);
+        $this->fileLocator->setBasePath($host);
 
         $links = $this->findLinks($this->domCrawler);
         $fonts = array();
 
         foreach ($links as $link) {
-            $locator = new FileLocator();
-            $locator->setBasePath($host);
-            $resourcePath = $locator->find($link, true);
-
+            $resourcePath = $this->fileLocator->find($link, true);
 
             $response = $this->browser->get($resourcePath);
             if (200 !== $response->getStatusCode()) {
                 continue;
             }
 
-            $resource = new FileResource($locator, $response->getContent());
+            $resource = new FileResource($this->fileLocator, $response->getContent());
             $fonts = array_merge($fonts, $this->findFontFaces($resource)->toArray());
             $fonts = array_merge($fonts, $this->findFontFacesFromImportNodes($resource)->toArray());
         }
@@ -49,6 +102,13 @@ class FontFactory
         return $fonts;
     }
 
+    /**
+     * Find font faces from import nodes.
+     *
+     * @param FileResource $fileResource The file resource
+     *
+     * @return NodeCollection
+     */
     public function findFontFacesFromImportNodes(FileResource $fileResource)
     {
         $factory = $this;
@@ -60,7 +120,7 @@ class FontFactory
                 $locator      = $fileResource->getFileLocator();
                 $resourcePath = $locator->find($node->getUrl());
 
-                $response = $factory->browser->get($resourcePath);
+                $response = $factory->getBrowser()->get($resourcePath);
                 if (200 === $response->getStatusCode()) {
                     $resource = new FileResource($locator, $response->getContent());
                     $fonts->merge($factory->findFontFaces($resource));
@@ -70,6 +130,13 @@ class FontFactory
         return $fonts;
     }
 
+    /**
+     * Find font faces.
+     *
+     * @param FileResource $fileResource The file resource
+     *
+     * @return NodeCollection
+     */
     public function findFontFaces(FileResource $fileResource)
     {
         $factory = $this;
@@ -87,12 +154,13 @@ class FontFactory
                     $locator      = $fileResource->getFileLocator();
                     $resourcePath = $locator->find($source);
 
-                    $response = $factory->browser->get($resourcePath);
+                    $response = $factory->getBrowser()->get($resourcePath);
                     if (200 === $response->getStatusCode()) {
                         $font->addSource($extension, $resourcePath);
                     } else {
                         $hasSources = false;
                     }
+
                 }
 
                 if ($hasSources) {
@@ -103,6 +171,13 @@ class FontFactory
         return $fonts;
     }
 
+    /**
+     * Find stylesheet link in html.
+     *
+     * @param DomCrawler $crawler The dom crawler
+     *
+     * @return array
+     */
     private function findLinks(DomCrawler $crawler)
     {
         $links = $this->domCrawler->filter('link')->each(function ($node) {
@@ -117,6 +192,11 @@ class FontFactory
         return array_filter($links);
     }
 
+    /**
+     * Gets the browser component.
+     *
+     * @return Browser
+     */
     public function getBrowser()
     {
         return $this->browser;

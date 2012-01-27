@@ -14,32 +14,19 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <service
-            id="font_crawler.crawler.repository.host"
-            class="FontCrawler\CrawlerBundle\Document\HostRepository">
-        </service>
-
-        <service
-            id="dom_crawler"
-            class="Symfony\Component\DomCrawler\Crawler"
-        />
-
-        <service
-            id="buzz.browser"
-            class="Buzz\Browser"
-        />
+        <service id="font_crawler.crawler.repository.host" class="FontCrawler\CrawlerBundle\Document\HostRepository" />
+        <service id="dom_crawler" class="Symfony\Component\DomCrawler\Crawler" />
+        <service id="buzz.browser" class="Buzz\Browser" />
+        <service id="font_crawler.crawler" class="FontCrawler\CrawlerBundle\Util\Crawler" />
+        <service id="font_crawler.file_locator" class="FontCrawler\CrawlerBundle\Util\FileLocator" />
 
         <service
             id="font_crawler.crawler.font_factory"
             class="FontCrawler\CrawlerBundle\FontFactory">
             <argument type="service" id="dom_crawler" />
             <argument type="service" id="font_crawler.crawler" />
+            <argument type="service" id="font_crawler.file_locator" />
             <argument type="service" id="buzz.browser" />
-        </service>
-
-        <service
-            id="font_crawler.crawler"
-            class="FontCrawler\CrawlerBundle\Util\Crawler">
         </service>
     </services>
 </container>

@@ -15,6 +15,7 @@ use FontCrawler\CrawlerBundle\FontFactory;
 use Symfony\Component\DomCrawler\Crawler as DomCrawler;
 use Symfony\Component\HttpFoundation\Request;
 use FontCrawler\CrawlerBundle\Util\Crawler as CssCrawler;
+use FontCrawler\CrawlerBundle\Util\FileLocator;
 use Buzz\Browser;
 
 /**
@@ -29,6 +30,7 @@ class FontFactoryTest extends \PHPUnit_Framework_TestCase
         $this->factory = new FontFactory(
             new DomCrawler(),
             new CssCrawler(),
+            new FileLocator(),
             new Browser()
         );
     }

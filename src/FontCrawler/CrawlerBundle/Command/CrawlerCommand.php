@@ -60,6 +60,7 @@ class CrawlerCommand extends ContainerAwareCommand
                     $output->writeln(sprintf('Get invalid response from "%s".', $host));
                 }
             } catch (\Exception $e) {
+                $output->writeln($e->getMessage());
                 $output->writeln(sprintf('Could not connect to "%s".', $host));
             }
         }
